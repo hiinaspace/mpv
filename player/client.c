@@ -80,6 +80,9 @@ struct mp_client_api {
     struct mp_custom_protocol *custom_protocols;
     int num_custom_protocols;
 
+    void *godot_audio_user_data;
+    mpv_godot_audio_callback_fn godot_audio_callback;
+
     struct mpv_render_context *render_context;
 };
 
@@ -2241,6 +2244,17 @@ int mpv_stream_cb_add_ro(mpv_handle *ctx, const char *protocol, void *user_data,
     return r;
 }
 
+int mpv_godot_audio_set_callback(mpv_handle *ctx, void *user_data,
+                                 mpv_godot_audio_callback_fn cb)
+{
+    struct mp_client_api *clients = ctx->clients;
+    mp_mutex_lock(&clients->lock);
+    clients->godot_audio_user_data = user_data;
+    clients->godot_audio_callback = cb;
+    mp_mutex_unlock(&clients->lock);
+    return 0;
+}
+
 bool mp_streamcb_lookup(struct mpv_global *g, const char *protocol,
                         void **out_user_data, mpv_stream_cb_open_ro_fn *out_fn)
 {
@@ -2255,6 +2269,21 @@ bool mp_streamcb_lookup(struct mpv_global *g, const char *protocol,
             found = true;
             break;
         }
+    }
+    mp_mutex_unlock(&clients->lock);
+    return found;
+}
+
+bool mp_godot_audio_get_callback(struct mpv_global *g, void **out_user_data,
+                                 mpv_godot_audio_callback_fn *out_fn)
+{
+    struct mp_client_api *clients = g->client_api;
+    bool found = false;
+    mp_mutex_lock(&clients->lock);
+    if (clients->godot_audio_callback) {
+        *out_user_data = clients->godot_audio_user_data;
+        *out_fn = clients->godot_audio_callback;
+        found = true;
     }
     mp_mutex_unlock(&clients->lock);
     return found;

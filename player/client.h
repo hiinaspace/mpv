@@ -7,6 +7,10 @@
 #include "mpv/stream_cb.h"
 #include "misc/bstr.h"
 
+struct mpv_godot_audio_frame;
+typedef void (*mpv_godot_audio_callback_fn)(void *user_data,
+                                            const struct mpv_godot_audio_frame *frame);
+
 struct MPContext;
 struct mpv_handle;
 struct mp_client_api;
@@ -53,5 +57,9 @@ void kill_video_async(struct mp_client_api *client_api);
 
 bool mp_streamcb_lookup(struct mpv_global *g, const char *protocol,
                         void **out_user_data, mpv_stream_cb_open_ro_fn *out_fn);
+MPV_EXPORT int mpv_godot_audio_set_callback(struct mpv_handle *ctx, void *user_data,
+                                            mpv_godot_audio_callback_fn cb);
+bool mp_godot_audio_get_callback(struct mpv_global *g, void **out_user_data,
+                                 mpv_godot_audio_callback_fn *out_fn);
 
 #endif
