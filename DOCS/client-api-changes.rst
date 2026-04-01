@@ -33,6 +33,10 @@ API changes
 ::
 
  --- mpv 0.40.0 ---
+ 2.7    - add the experimental MPV_RENDER_API_TYPE_VULKAN render backend and
+          include/mpv/render_vk.h for importing an existing Vulkan device and
+          rendering into caller-provided VkImage targets.
+ --- mpv 0.40.0 ---
  2.6    - add the experimental mpv_godot_audio_set_callback() API and
           include/mpv/godot_audio.h for the custom godot audio output path.
  --- mpv 0.40.0 ---
