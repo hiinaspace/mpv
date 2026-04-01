@@ -252,6 +252,7 @@ sources = files(
     'video/out/gpu/utils.c',
     'video/out/gpu/video.c',
     'video/out/gpu/video_shaders.c',
+    'video/out/vulkan/libmpv_vk.c',
     'video/out/libmpv_sw.c',
     'video/out/vo.c',
     'video/out/vo_gpu.c',
@@ -1851,9 +1852,9 @@ if get_option('libmpv')
     pkg.generate(libmpv, version: client_api_version,
                  description: 'mpv media player client library')
 
-    headers = [include/mpv/client.h, include/mpv/godot_audio.h,
-               include/mpv/render.h, include/mpv/render_d3d11.h,
-               include/mpv/render_gl.h,
+    headers = ['include/mpv/client.h', 'include/mpv/godot_audio.h',
+               'include/mpv/render.h', 'include/mpv/render_d3d11.h',
+               'include/mpv/render_gl.h', 'include/mpv/render_vk.h',
                'include/mpv/stream_cb.h']
     install_headers(headers, subdir: 'mpv')
 

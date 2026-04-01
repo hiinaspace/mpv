@@ -51,6 +51,7 @@ extern "C" {
  *
  * Direct3D 11: via MPV_RENDER_API_TYPE_D3D11, see render_d3d11.h header.
  * OpenGL: via MPV_RENDER_API_TYPE_OPENGL, see render_gl.h header.
+ * Vulkan: via MPV_RENDER_API_TYPE_VULKAN, see render_vk.h header.
  * Software: via MPV_RENDER_API_TYPE_SW, see section "Software renderer"
  *
  * Threading
@@ -189,6 +190,10 @@ typedef enum mpv_render_param_type {
      *      It is expected that an OpenGL context is valid and "current" when
      *      calling mpv_render_* functions (unless specified otherwise). It
      *      must be the same context for the same mpv_render_context.
+     *
+     *   MPV_RENDER_API_TYPE_VULKAN:
+     *      Vulkan 1.2 or later on a caller-provided VkDevice.
+     *      Providing MPV_RENDER_PARAM_VULKAN_INIT_PARAMS is required.
      */
     MPV_RENDER_PARAM_API_TYPE = 1,
     /**
@@ -435,6 +440,18 @@ typedef enum mpv_render_param_type {
      * Type: mpv_d3d11_fbo*
      */
     MPV_RENDER_PARAM_D3D11_FBO = 22,
+    /**
+     * Required parameters for initializing the Vulkan renderer. Valid for
+     * mpv_render_context_create().
+     * Type: mpv_vulkan_init_params* (see render_vk.h)
+     */
+    MPV_RENDER_PARAM_VULKAN_INIT_PARAMS = 23,
+    /**
+     * Describes a Vulkan render target image. Valid for
+     * mpv_render_context_render().
+     * Type: mpv_vulkan_image* (see render_vk.h)
+     */
+    MPV_RENDER_PARAM_VULKAN_IMAGE = 24,
 } mpv_render_param_type;
 
 /**
@@ -481,6 +498,8 @@ typedef struct mpv_render_param {
 #define MPV_RENDER_API_TYPE_D3D11 "d3d11"
 // See render_gl.h
 #define MPV_RENDER_API_TYPE_OPENGL "opengl"
+// See render_vk.h
+#define MPV_RENDER_API_TYPE_VULKAN "vulkan"
 // See section "Software renderer"
 #define MPV_RENDER_API_TYPE_SW "sw"
 
