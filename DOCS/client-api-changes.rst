@@ -33,6 +33,9 @@ API changes
 ::
 
  --- mpv 0.40.0 ---
+ 2.6    - add the experimental mpv_godot_audio_set_callback() API and
+          include/mpv/godot_audio.h for the custom godot audio output path.
+ --- mpv 0.40.0 ---
  2.5    - Deprecate MPV_RENDER_PARAM_AMBIENT_LIGHT. no replacement.
  --- mpv 0.39.0 ---
  2.4    - mpv_render_param with the MPV_RENDER_PARAM_ICC_PROFILE argument no
